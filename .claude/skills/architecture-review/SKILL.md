@@ -53,6 +53,10 @@ Flag any module importing > 5 other internal modules as a coupling smell.
 
 ## Anti-Patterns
 
-- Designing for requirements that don't exist yet (YAGNI)
-- Skipping the ADR ("we all know why we did it")
-- God modules (one file doing 5 things)
+| ❌ Don't | ✅ Do instead |
+|---|---|
+| Design for requirements that don't exist yet | YAGNI — build for what's needed now |
+| Skip the ADR ("we all know why") | Document every significant decision |
+| God modules (one file doing 5 things) | One clear responsibility per module |
+| Propose a rewrite to "clean things up" | Targeted improvements serving the current goal |
+| Design in isolation without reading existing code | Explore patterns before proposing changes |

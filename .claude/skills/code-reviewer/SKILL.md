@@ -41,3 +41,13 @@ Review code systematically. Run tools first. Report only what matters.
 - NEVER approve if tests fail or coverage < 80%
 - NEVER approve if mypy reports errors
 - ALWAYS run tools — never approve by reading alone
+
+## Anti-Patterns
+
+| ❌ Don't | ✅ Do instead |
+|---|---|
+| Approve by reading code only | Run pytest, mypy, ruff first — always |
+| Report every style issue | Only report 🔴 and 🟡; skip 🟢 unless asked |
+| Approve if one test is missing "just this once" | Hard gate: no tests = no approval |
+| Give vague feedback ("this looks wrong") | Cite file:line with the specific issue |
+| Re-review without the implementer fixing first | Fix → re-run tools → then re-review |
