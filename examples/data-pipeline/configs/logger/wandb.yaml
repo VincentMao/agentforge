@@ -1,0 +1,4 @@
+wandb:
+  _target_: lightning.pytorch.loggers.WandbLogger
+  project: agentforge-data-pipeline
+  log_model: false

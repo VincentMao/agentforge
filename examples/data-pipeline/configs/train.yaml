@@ -1,0 +1,19 @@
+# Main training entry point.
+# Override any section from CLI: python src/train.py model.optimizer.lr=0.01
+
+defaults:
+  - _self_
+  - data: tabular
+  - model: mlp
+  - callbacks: default
+  - trainer: default
+  - logger: null       # set with: logger=wandb or logger=tensorboard
+  - experiment: null   # set with: experiment=baseline
+
+task_name: "train"
+tags: ["dev"]
+seed: 42
+train: true
+# test phase requires loading best checkpoint; run separately with: python src/eval.py ckpt_path=best
+test: false
+ckpt_path: null

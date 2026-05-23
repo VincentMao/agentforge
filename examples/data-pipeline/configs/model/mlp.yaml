@@ -1,0 +1,27 @@
+# Model, optimizer, and scheduler configuration.
+# _partial_: true means Hydra stores the partially-instantiated callable;
+# the LightningModule calls it with params= at configure_optimizers() time.
+
+_target_: src.models.module.TabularLitModule
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 0.001
+  weight_decay: 1.0e-4
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+  _partial_: true
+  mode: min
+  factor: 0.5
+  patience: 10
+
+net:
+  _target_: src.models.components.mlp.MLP
+  input_dim: 10
+  hidden_dims: [64, 128, 64]
+  output_dim: 2
+  dropout: 0.1
+
+compile: false

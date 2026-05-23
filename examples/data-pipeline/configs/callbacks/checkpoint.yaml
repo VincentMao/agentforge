@@ -1,0 +1,10 @@
+# Checkpoint only — no early stopping.
+
+model_checkpoint:
+  _target_: lightning.pytorch.callbacks.ModelCheckpoint
+  dirpath: logs/checkpoints
+  filename: "epoch_{epoch:03d}-val_loss_{val/loss:.4f}"
+  monitor: "val/loss"
+  mode: min
+  save_last: true
+  save_top_k: 1

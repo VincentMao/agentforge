@@ -1,0 +1,23 @@
+# @package _global_
+# Baseline experiment: override multiple config sections at once.
+# Run with: python src/train.py experiment=baseline
+
+defaults:
+  - override /data: tabular
+  - override /model: mlp
+
+tags: ["baseline", "mlp"]
+seed: 12345
+
+trainer:
+  max_epochs: 20
+  gradient_clip_val: 0.5
+
+model:
+  optimizer:
+    lr: 0.001
+  net:
+    hidden_dims: [128, 256, 128]
+
+data:
+  batch_size: 128

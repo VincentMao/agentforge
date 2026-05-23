@@ -1,0 +1,8 @@
+# Early stopping only — no checkpointing.
+
+early_stopping:
+  _target_: lightning.pytorch.callbacks.EarlyStopping
+  monitor: "val/loss"
+  patience: 10
+  mode: min
+  min_delta: 0.001

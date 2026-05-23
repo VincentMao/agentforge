@@ -1,0 +1,17 @@
+# Default callbacks: checkpoint best model + early stopping.
+
+model_checkpoint:
+  _target_: lightning.pytorch.callbacks.ModelCheckpoint
+  dirpath: logs/checkpoints
+  filename: "epoch_{epoch:03d}-val_acc_{val/acc:.3f}"
+  monitor: "val/acc"
+  mode: max
+  save_last: true
+  save_top_k: 3
+
+early_stopping:
+  _target_: lightning.pytorch.callbacks.EarlyStopping
+  monitor: "val/acc"
+  patience: 15
+  mode: max
+  min_delta: 0.001

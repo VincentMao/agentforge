@@ -1,0 +1,13 @@
+# Evaluation-only entry point.
+# Run: python src/eval.py ckpt_path=logs/checkpoints/best.ckpt
+
+defaults:
+  - _self_
+  - data: tabular
+  - model: mlp
+  - trainer: default
+  - logger: null
+
+# ckpt_path is required — pass as: python src/eval.py ckpt_path=PATH
+ckpt_path: ???
+seed: 42

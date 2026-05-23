@@ -1,0 +1,13 @@
+# @package _global_
+# LR ablation: lower learning rate vs baseline's 0.001.
+# Run with: python src/train.py experiment=ablation_lr
+
+defaults:
+  - override /model: mlp
+
+tags: ["ablation", "lr-sweep"]
+seed: 42
+
+model:
+  optimizer:
+    lr: 0.0001
