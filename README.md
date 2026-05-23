@@ -4,7 +4,7 @@
 
 **One-command install:**
 ```bash
-claude plugin install github:YOUR_USERNAME/agentforge
+claude plugin install github:VincentMao/agentforge
 ```
 
 ## The Problem
@@ -21,7 +21,7 @@ agentforge fixes this with:
 ## See It Work First
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/agentforge
+git clone https://github.com/VincentMao/agentforge
 cd agentforge/examples/legacy-refactor/before
 claude  # open Claude Code here
 # then type: /refactoring

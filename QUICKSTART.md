@@ -3,7 +3,7 @@
 ## Step 1: Install (30 seconds)
 
 ```bash
-claude plugin install github:YOUR_USERNAME/agentforge
+claude plugin install github:VincentMao/agentforge
 ```
 
 Restart Claude Code. All 9 skills are now available as `/skill-name` commands.
@@ -11,7 +11,7 @@ Restart Claude Code. All 9 skills are now available as `/skill-name` commands.
 ## Step 2: Clone the Examples
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/agentforge
+git clone https://github.com/VincentMao/agentforge
 cd agentforge
 ```
 

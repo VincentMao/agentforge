@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-legacy-refactor:
+    name: Test legacy-refactor/after
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          cd examples/legacy-refactor/after
+          pip install -e ".[dev]"
+
+      - name: Run tests with coverage
+        run: |
+          cd examples/legacy-refactor/after
+          pytest tests/ --cov=src --cov-fail-under=80 -v
+
+  test-data-pipeline:
+    name: Test data-pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          cd examples/data-pipeline
+          pip install -e ".[dev]"
+
+      - name: Lint
+        run: |
+          cd examples/data-pipeline
+          ruff check src/ tests/
+          ruff format src/ tests/ --check
+
+      - name: Run tests with coverage
+        run: |
+          cd examples/data-pipeline
+          pytest tests/ --cov=src --cov-fail-under=80 -v
+
+  validate-structure:
+    name: Validate repo structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify plugin.json exists and is valid JSON
+        run: python -c "import json; json.load(open('plugin.json'))"
+
+      - name: Verify all skills have SKILL.md
+        run: |
+          for skill in .claude/skills/*/; do
+            if [ ! -f "$skill/SKILL.md" ]; then
+              echo "MISSING: $skill/SKILL.md"
+              exit 1
+            fi
+          done
+          echo "All skills have SKILL.md ✅"
+
+      - name: Verify all agents have .md files
+        run: |
+          agents=$(ls .claude/agents/*.md 2>/dev/null | wc -l)
+          if [ "$agents" -lt 7 ]; then
+            echo "Expected 7 agent files, found $agents"
+            exit 1
+          fi
+          echo "Agent count: $agents ✅"
