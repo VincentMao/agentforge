@@ -1,0 +1,20 @@
+{
+  "name": "agentforge",
+  "version": "0.1.0",
+  "description": "Skills, agents, rules, and prompt templates for 10x productivity on large codebases. Tool-agnostic: works with Claude, Codex, JetBrains AI, and more.",
+  "keywords": ["productivity", "agents", "skills", "prompt-engineering", "large-codebase", "python", "pytorch"],
+  "skills": [
+    "./.claude/skills/10x-engineer",
+    "./.claude/skills/planner",
+    "./.claude/skills/code-reviewer",
+    "./.claude/skills/refactoring",
+    "./.claude/skills/unit-testing",
+    "./.claude/skills/10x-data-scientist",
+    "./.claude/skills/architecture-review",
+    "./.claude/skills/debugging",
+    "./.claude/skills/documentation"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/YOUR_USERNAME/agentforge",
+  "repository": "https://github.com/YOUR_USERNAME/agentforge"
+}
