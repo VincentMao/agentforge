@@ -126,7 +126,7 @@ flowchart TD
 
 Open the messy `before/` code in Claude Code, type `/refactoring`. The skill enforces tests-first, one seam at a time — no big-bang rewrites.
 
-<video src="assets/refactor-before-after_video.mp4" controls loop muted width="100%"></video>
+<video src="https://github.com/user-attachments/assets/16ab5296-856b-4bb7-8665-b3ff010cfc4b" controls loop muted width="100%"></video>
 
 | | `before/` | `after/` |
 |---|---|---|
