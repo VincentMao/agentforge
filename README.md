@@ -1,4 +1,5 @@
 <div align="center">
+  <img src="assets/logo.png" alt="agentforge logo" width="110"><br><br>
   <img src="assets/banner.png" alt="agentforge banner" width="100%">
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -248,6 +249,10 @@ Use when the next action depends on what the previous one returned. The structur
 ### Chain of Thought — Show Reasoning Before the Answer
 
 Use for algorithm design, multi-constraint optimization, or any problem where intermediate steps change the answer. Forces explicit reasoning before conclusions.
+
+<div align="center">
+  <img src="assets/template-chain-of-thought.png" alt="Chain of Thought pattern: staircase of reasoning steps leading to a proven answer" width="80%">
+</div>
 
 → [`prompt-templates/chain-of-thought.md`](prompt-templates/chain-of-thought.md)
 
