@@ -1,5 +1,4 @@
 <div align="center">
-  <img src="assets/logo.png" alt="agentforge logo" width="110"><br><br>
   <img src="assets/banner.png" alt="agentforge banner" width="100%">
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -178,8 +177,6 @@ Use when a task can be broken into N **independent** parallel subtasks that don'
   <img src="assets/template-orchestrator-worker.png" alt="Orchestrator-Worker pattern: hub dispatches to parallel workers, results merge" width="80%">
 </div>
 
-<video src="assets/template-orchestrator-worker.mp4" controls loop muted width="100%"></video>
-
 → [`prompt-templates/orchestrator-worker.md`](prompt-templates/orchestrator-worker.md)
 
 ---
@@ -191,8 +188,6 @@ Use when you need output to meet a measurable bar — generate → score → imp
 <div align="center">
   <img src="assets/template-evaluator-optimizer.png" alt="Evaluator-Optimizer pattern: feedback loop from generator through evaluator to optimizer" width="80%">
 </div>
-
-<video src="assets/template-evaluator-optimizer.mp4" controls loop muted width="100%"></video>
 
 → [`prompt-templates/evaluator-optimizer.md`](prompt-templates/evaluator-optimizer.md)
 
