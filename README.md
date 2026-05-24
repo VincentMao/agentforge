@@ -10,9 +10,15 @@
 
 ---
 
+<div align="center">
+  <img src="assets/vs-vanilla-claude.png" alt="agentforge vs vanilla Claude — same request, very different output" width="85%">
+</div>
+
+<br>
+
 > **Skills, agents, rules, and prompt patterns that make AI-assisted development actually work at scale.**
 
-Without structure, Claude on a large codebase produces code that works once, degrades fast, and has no tests.  
+Without structure, Claude on a large codebase produces code that works once, degrades fast, and has no tests.
 agentforge fixes this with 9 behavioral skills, a 7-agent team, and 5 quality rules — installable in one command.
 
 ```bash
@@ -36,64 +42,58 @@ claude plugin install github:VincentMao/agentforge
 
 ---
 
-## The Agent Team
+## The Skill Interface
 
-```mermaid
-flowchart LR
-    U(["👤 You\nUser Request"]) --> O
+Type `/` in Claude Code after installing the plugin — your specialist team appears instantly.
 
-    subgraph Team["agentforge Agent Team"]
-        O["🎯 orchestrator\nRoutes & Assigns"]
-        P["📋 planner\nBreaks Down"]
-        CR["👀 code-reviewer\nValidates"]
-        EV["✅ evaluator\nVerifies"]
-        DD["📚 doc-drafter\nDocuments"]
-    end
+<div align="center">
+  <img src="assets/skill-picker.png" alt="Claude Code skill picker showing all 9 agentforge skills" width="60%">
+</div>
 
-    O --> P
-    P -->|"task list"| CR
-    CR -->|"❌ issues"| P
-    CR -->|"✅ passes"| EV
-    EV -->|"❌ rework"| P
-    EV -->|"✅ verified"| DD
-    DD --> Done(["🚀 Done"])
+**All 9 skills:** `10x-engineer` · `planner` · `code-reviewer` · `refactoring` · `unit-testing` · `10x-data-scientist` · `architecture-review` · `debugging` · `documentation`
 
-    style O  fill:#ec4899,stroke:#be185d,color:#fff
-    style P  fill:#f59e0b,stroke:#d97706,color:#fff
-    style CR fill:#8b5cf6,stroke:#6d28d9,color:#fff
-    style EV fill:#10b981,stroke:#047857,color:#fff
-    style DD fill:#06b6d4,stroke:#0891b2,color:#fff
-    style U  fill:#6b7280,stroke:#374151,color:#fff
-    style Done fill:#22c55e,stroke:#15803d,color:#fff
-```
+Each skill loads a behavioral contract — it changes *how Claude thinks*, not just what it outputs.
 
 ---
 
-## How Skills Work
+## The Agent Team
 
-Type `/refactoring` in Claude Code → the behavioral contract loads → Claude changes how it thinks and acts.
+Seven specialized agents that coordinate on complex tasks. Here's a real task flowing through the full team:
 
-```mermaid
-flowchart LR
-    A(["/refactoring\nUser types"]) --> B["Claude Code\nloads SKILL.md"]
-    B --> C["Behavioral contract\napplied to session"]
-    C --> D["Tests must exist first\nOne seam per commit\nStrangler fig for big refactors"]
-    D --> E(["Claude produces\nrefactored code ✅"])
+<div align="center">
+  <img src="assets/agent-team-flow.png" alt="agentforge agent team — how a real task flows from you through orchestrator, planner, code-reviewer, evaluator, doc-drafter to done" width="90%">
+</div>
 
-    style A fill:#6366f1,stroke:#4f46e5,color:#fff
-    style B fill:#8b5cf6,stroke:#6d28d9,color:#fff
-    style C fill:#06b6d4,stroke:#0891b2,color:#fff
-    style D fill:#f59e0b,stroke:#d97706,color:#fff
-    style E fill:#10b981,stroke:#047857,color:#fff
+| Agent | Role | Hands off to |
+|---|---|---|
+| `orchestrator` | Routes the task, never writes code | planner |
+| `planner` | Breaks work into phases with TodoWrite | implementation |
+| `code-reviewer` | Runs pytest + mypy + ruff, reports by severity | evaluator or back to planner |
+| `evaluator` | Checks output against original requirements | doc-drafter |
+| `doc-drafter` | Writes docstrings, README updates, changelog | done |
+
+---
+
+## How Rules Govern Your Codebase
+
+The `.claude/rules/` files are read by Claude at the start of every session. You write them once — Claude enforces them on every commit, every PR, every code review.
+
+<div align="center">
+  <img src="assets/rules-governance.png" alt="how agentforge rules control code quality — rules layer, enforcement, result" width="90%">
+</div>
+
+```bash
+# What happens automatically on every git commit:
+ruff check src/ tests/ --fix   # formatting + linting
+mypy src/ --strict             # type checking
+pytest tests/ --cov=src --cov-fail-under=80   # tests + coverage gate
 ```
-
-**All 9 skills:** `10x-engineer` · `planner` · `code-reviewer` · `refactoring` · `unit-testing` · `10x-data-scientist` · `architecture-review` · `debugging` · `documentation`
 
 ---
 
 ## The Quality Gate
 
-Every commit passes through four automated gates — enforced by pre-commit hooks:
+Every commit passes through four automated gates, enforced by pre-commit hooks:
 
 ```mermaid
 flowchart TD
@@ -124,7 +124,9 @@ flowchart TD
 
 ## The Refactor Demo
 
-Open the messy `before/` code in Claude Code, type `/refactoring`. Watch it:
+Open the messy `before/` code in Claude Code, type `/refactoring`. The skill enforces tests-first, one seam at a time — no big-bang rewrites.
+
+<video src="assets/refactor-before-after_video.mp4" controls loop muted width="100%"></video>
 
 | | `before/` | `after/` |
 |---|---|---|
@@ -143,46 +145,125 @@ claude   # then type: /refactoring
 
 ## The ML Pipeline
 
-A production-ready PyTorch + Hydra training pipeline. Mirrors the vizard_project pattern.
+A production-ready PyTorch + Hydra training pipeline — the same pattern used in large-scale ML systems. Swap a model, change a dataset, or run a hyperparameter sweep from the CLI with no code edits.
+
+<div align="center">
+  <img src="assets/ml-pipeline.png" alt="Production ML Pipeline — Hydra config layer feeding PyTorch Lightning training pipeline" width="92%">
+</div>
 
 ```bash
 cd examples/data-pipeline
 pip install -e ".[dev]"
-make train   # synthetic data auto-generated
-```
+make train                                        # synthetic data auto-generated
 
-Override any hyperparameter from the CLI:
-```bash
-python src/train.py experiment=baseline
-python src/train.py model.optimizer.lr=0.0001 trainer.max_epochs=50
-python src/train.py "model.optimizer.lr=0.001,0.0001" --multirun
+python src/train.py experiment=baseline           # named experiment override
+python src/train.py model.optimizer.lr=0.0001     # single hyperparameter
+python src/train.py "model.optimizer.lr=0.001,0.0001" --multirun   # sweep
 ```
 
 ---
 
 ## Prompt Templates
 
-7 orchestration patterns — each with worked examples and anti-patterns:
+Seven orchestration patterns — each with a concrete worked example and an explanation of when (and when not) to use it. Full templates with anti-patterns are in [`prompt-templates/`](prompt-templates/).
 
-| Pattern | When to use |
-|---|---|
-| [`orchestrator-worker`](prompt-templates/orchestrator-worker.md) | Break task into N independent parallel subtasks |
-| [`evaluator-optimizer`](prompt-templates/evaluator-optimizer.md) | Iterate against a rubric until quality threshold is met |
-| [`parallel-agents`](prompt-templates/parallel-agents.md) | Same task type across N independent contexts |
-| [`reflection`](prompt-templates/reflection.md) | Adversarial self-critique before delivering high-stakes output |
-| [`plan-and-execute`](prompt-templates/plan-and-execute.md) | Approval gate before touching code |
-| [`react-pattern`](prompt-templates/react-pattern.md) | Exploratory tasks where next action depends on previous result |
-| [`chain-of-thought`](prompt-templates/chain-of-thought.md) | Complex reasoning with intermediate steps |
+---
+
+### Orchestrator-Worker — Fan Out, Then Merge
+
+Use when a task can be broken into N **independent** parallel subtasks that don't need each other's output.
+
+<div align="center">
+  <img src="assets/template-orchestrator-worker.png" alt="Orchestrator-Worker pattern: hub dispatches to parallel workers, results merge" width="80%">
+</div>
+
+<video src="assets/template-orchestrator-worker.mp4" controls loop muted width="100%"></video>
+
+→ [`prompt-templates/orchestrator-worker.md`](prompt-templates/orchestrator-worker.md)
+
+---
+
+### Evaluator-Optimizer — Iterate Until Quality Threshold
+
+Use when you need output to meet a measurable bar — generate → score → improve → repeat until ≥ threshold.
+
+<div align="center">
+  <img src="assets/template-evaluator-optimizer.png" alt="Evaluator-Optimizer pattern: feedback loop from generator through evaluator to optimizer" width="80%">
+</div>
+
+<video src="assets/template-evaluator-optimizer.mp4" controls loop muted width="100%"></video>
+
+→ [`prompt-templates/evaluator-optimizer.md`](prompt-templates/evaluator-optimizer.md)
+
+---
+
+### Parallel Agents — Same Task, N Independent Contexts
+
+Use when you have the same task type to run across multiple independent files or contexts simultaneously. 3× faster than sequential.
+
+<div align="center">
+  <img src="assets/template-parallel-agents.png" alt="Parallel Agents pattern: three agents run simultaneously, results merge into conftest + test files" width="80%">
+</div>
+
+→ [`prompt-templates/parallel-agents.md`](prompt-templates/parallel-agents.md)
+
+---
+
+### Reflection — Adversarial Self-Critique Before Delivering
+
+Use for high-stakes outputs: architecture decisions, security analysis, code reviews. One reflection loop catches what a first pass misses.
+
+<div align="center">
+  <img src="assets/template-reflection.png" alt="Reflection pattern: generate → reflect with adversarial questions → revise → deliver" width="80%">
+</div>
+
+→ [`prompt-templates/reflection.md`](prompt-templates/reflection.md)
+
+---
+
+### Plan and Execute — Approval Gate Before Touching Code
+
+Use before any task touching more than 2 files, or where wrong assumptions mean wasted hours. Plan is reviewed and approved before a single line changes.
+
+<div align="center">
+  <img src="assets/template-plan-execute.png" alt="Plan and Execute pattern: planning phase → approval gate → execution phase" width="80%">
+</div>
+
+→ [`prompt-templates/plan-and-execute.md`](prompt-templates/plan-and-execute.md)
+
+---
+
+### ReAct — Reasoning + Acting for Exploratory Tasks
+
+Use when the next action depends on what the previous one returned. The structured Thought → Action → Observation loop prevents guessing.
+
+<div align="center">
+  <img src="assets/template-react.png" alt="ReAct pattern: alternating Thought, Action, Observation steps tracing a bug to its fix" width="80%">
+</div>
+
+→ [`prompt-templates/react-pattern.md`](prompt-templates/react-pattern.md)
+
+---
+
+### Chain of Thought — Show Reasoning Before the Answer
+
+Use for algorithm design, multi-constraint optimization, or any problem where intermediate steps change the answer. Forces explicit reasoning before conclusions.
+
+→ [`prompt-templates/chain-of-thought.md`](prompt-templates/chain-of-thought.md)
 
 ---
 
 ## Quick Start
 
+<div align="center">
+  <img src="assets/setup-60sec.png" alt="60-second setup: install plugin, copy .claude/ into project, type a skill" width="92%">
+</div>
+
 ```bash
-# Install as Claude Code plugin (one command, all 9 skills activated)
+# Install as Claude Code plugin — all 9 skills activated immediately
 claude plugin install github:VincentMao/agentforge
 
-# Or copy .claude/ into any existing project
+# Or drop .claude/ directly into any existing Python project
 cp -r /path/to/agentforge/.claude /your/project/
 ```
 
